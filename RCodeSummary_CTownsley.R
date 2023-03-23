@@ -146,41 +146,41 @@ dataframe3 <- rbind(dataframe1, dataframe2)
 new_dataframe <- left_join(dataframe1, dataframe2, by = c("uniquecolumnname"))
 
 
-#R MARKDOWN ####
+#WORK WITH CENSUS DATA ####
 
-#Resources#
-#Cheat sheet - https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf 
-#Formatting - https://r4ds.had.co.nz/r-markdown-formats.html 
-#Formatting - https://bookdown.org/yihui/rmarkdown/html-document.html#code-folding 
-#Detailed description of knitr - https://yihui.org/knitr/ 
-#R markdown syntax highlighting examples - https://www.garrickadenbuie.com/blog/pandoc-syntax-highlighting-examples/ 
-#Info on changing html output font - https://rstudio4edu.github.io/rstudio4edu-book/doc-fancy.html 
+#Install the API key
+census_api_key("API_Key", overwrite = TRUE)
+census_api_key("API_Key", install = TRUE)
 
-#To specify font of r markdown output to html, can use inline css
-<style>
-  body, p {
-    background-color: lightgray;
-    color: black; #font color
-    font-family: font name;
-  }
-</style>
+#Download Dataset
+#Load variable table
+dd19_5 <- load_variables(year = 2019,dataset = "acs5")
+#^table name ^function    ^year of variables    ^can also pull census from API
+write.csv(filename, file = "filepath w file name at the end", row.names = FALSE) 
+#^can download table as excel for side by side reference
 
+#Download Data
+#For ACS
+newtablename <- get_acs(geography = "place",
+                        state = "MA", 
+                        variables = c("B19013_001","B25031_001"), ##find varible from table above
+                        year = 2019,
+                        survey = "acs5")
+#For Decennial Census
+newtablename <- get_decennial(geography = "tract",
+                              state = 42,
+                              county= 101,
+                              variables = vars_race_2010sf1,
+                              year = 2010,
+                              survey = "sf1", geometry=FALSE)
 
-#AESTHETICS ####
+#geography can be "place", "tract", "county", "state"
+# need FIPS code
+#state: https://www.census.gov/library/reference/code-lists/ansi.html#par_statelist_1 
+#other geographies: https://www.census.gov/library/reference/code-lists/ansi.html
 
-#Resources#
-#Overview of ggplot themes - https://ggplot2.tidyverse.org/reference/ggtheme.html
-#Rayshader package for 3D visualization - https://www.rayshader.com/ 
-
-#create color palette
-palettename <- c("#050234","#2C0078","#7F00BF","#F600FF","#FF0DBE","#FF569F","#FF9BA8","#FFE8E4")
-
-#divide plot into two
-par(mfrow=c(2,1))
-
-#Add legend
-legend("location", c("X", "Y"), col=c("red", "blue"))
-#location examples are "bottomright", "topleft", etc.
+#To subset data
+MH<-subset(dat_19_5_tract,dat_19_5_tract$GEOID==25025080900|dat_19_5_tract$GEOID==25025081100|dat_19_5_tract$GEOID==25025080801)
 
 
 #CHARTS/PLOTS ####
@@ -209,7 +209,11 @@ abline(v=median(dataframe$clmn))
 #Add line for y column
 abline(h=mean(dataframe$clmn))
 
-# Correlation matrix - http://www.sthda.com/english/wiki/correlation-matrix-a-quick-start-guide-to-analyze-format-and-visualize-a-correlation-matrix-using-r-software 
+# Correlogram to visualize correlation matrix -
+#http://www.sthda.com/english/wiki/correlation-matrix-a-quick-start-guide-to-analyze-format-and-visualize-a-correlation-matrix-using-r-software 
+#Resource on editing correlogram aesthetics -
+#http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram
+
 
 # using ggplot
 # Resource on formatting ggplot2 bar plots:http://www.sthda.com/english/wiki/ggplot2-barplots-quick-start-guide-r-software-and-data-visualization
@@ -248,39 +252,75 @@ ggplot() +
   mapTheme
 
 
-#WORK WITH CENSUS DATA ####
+#AESTHETICS ####
 
-#Install the API key
-census_api_key("API_Key", overwrite = TRUE)
-census_api_key("API_Key", install = TRUE)
+#Resources#
+#Overview of ggplot themes - https://ggplot2.tidyverse.org/reference/ggtheme.html
+#Rayshader package for 3D visualization - https://www.rayshader.com/ 
 
-#Download Dataset
-#Load variable table
-dd19_5 <- load_variables(year = 2019,dataset = "acs5")
-#^table name ^function    ^year of variables    ^can also pull census from API
-write.csv(filename, file = "filepath w file name at the end", row.names = FALSE) 
-#^can download table as excel for side by side reference
+#create color palette
+palettename <- c("#050234","#2C0078","#7F00BF","#F600FF","#FF0DBE","#FF569F","#FF9BA8","#FFE8E4")
 
-#Download Data
-#For ACS
-newtablename <- get_acs(geography = "place",
-                    state = "MA", 
-                    variables = c("B19013_001","B25031_001"), ##find varible from table above
-                    year = 2019,
-                    survey = "acs5")
-#For Decennial Census
-newtablename <- get_decennial(geography = "tract",
-                              state = 42,
-                              county= 101,
-                              variables = vars_race_2010sf1,
-                              year = 2010,
-                              survey = "sf1", geometry=FALSE)
+#divide plot into two
+par(mfrow=c(2,1))
 
-#geography can be "place", "tract", "county", "state"
-# need FIPS code
-#state: https://www.census.gov/library/reference/code-lists/ansi.html#par_statelist_1 
-#other geographies: https://www.census.gov/library/reference/code-lists/ansi.html
+#Add legend
+legend("location", c("X", "Y"), col=c("red", "blue"))
+#location examples are "bottomright", "topleft", etc.
 
-#To subset data
-MH<-subset(dat_19_5_tract,dat_19_5_tract$GEOID==25025080900|dat_19_5_tract$GEOID==25025081100|dat_19_5_tract$GEOID==25025080801)
+
+#Regressions ####
+
+#Interpreting regression results - key statistics:
+#R-squared
+  # Tells what % of the variability in the dependent variable is explained by the model
+  # in other words - r-squared measures the strength of the relationship btwn the model
+  # and dependent variable on a 0-100% scale
+  # so, higher r-squared values represent smaller differences btwn the observed data
+  # and the fitted values.
+  # r-squared < 50% is common when studying human behavior
+  # IMPORTANT NOTE: r-squared increases every time you add an independent variable to the model.
+#Adjusted R-squared
+  # Adjusts for the number of terms in the model!
+  # Its value increases only when the new term improves the model fit more than expected by chance alone.
+  # The adjusted R-squared value actually decreases when the term doesn’t improve the model fit enough.
+  # Useful for comparing goodness-of-fit for regression models with differing numbers of independent variables.
+#Multiple R-squared
+#Significance codes
+#F-statistic
+  # a large f-stat means the model has a strong fit and we can reject the
+  # null hypothesis that a null model (just the intercept) describes the data better.
+#p-value
+#AIC
+  # Particularly helpful for backwards selection
+#variance inflation factor (VIF)
+  # Index of how a coefficient variance increases due to colinearity.
+  # VIF calculates how correlated the variable is with all the other variables in the model.
+  # Mechanics: Regress X1 on X2, calculate r2 of this relationship
+  # Calculate the VIF for X1 as follows:  1/(1 - r2)
+  # some people say if VIF>5-10 then you have a problem, 
+  # others are more conservative and say if sqrt(vif)>2 then you have a problem
+
+#Other useful statistics: 
+#Residual standard error - are they centered around 0?
+
+
+#R MARKDOWN ####
+
+#Resources#
+#Cheat sheet - https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf 
+#Formatting - https://r4ds.had.co.nz/r-markdown-formats.html 
+#Formatting - https://bookdown.org/yihui/rmarkdown/html-document.html#code-folding 
+#Detailed description of knitr - https://yihui.org/knitr/ 
+#R markdown syntax highlighting examples - https://www.garrickadenbuie.com/blog/pandoc-syntax-highlighting-examples/ 
+#Info on changing html output font - https://rstudio4edu.github.io/rstudio4edu-book/doc-fancy.html 
+
+#To specify font of r markdown output to html, can use inline css
+<style>
+  body, p {
+    background-color: lightgray;
+    color: black; #font color
+    font-family: font name;
+  }
+</style>
 

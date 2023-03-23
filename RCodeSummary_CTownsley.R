@@ -209,6 +209,8 @@ abline(v=median(dataframe$clmn))
 #Add line for y column
 abline(h=mean(dataframe$clmn))
 
+# Correlation matrix - http://www.sthda.com/english/wiki/correlation-matrix-a-quick-start-guide-to-analyze-format-and-visualize-a-correlation-matrix-using-r-software 
+
 # using ggplot
 # Resource on formatting ggplot2 bar plots:http://www.sthda.com/english/wiki/ggplot2-barplots-quick-start-guide-r-software-and-data-visualization
 ggplot()+

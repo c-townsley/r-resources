@@ -269,7 +269,7 @@ legend("location", c("X", "Y"), col=c("red", "blue"))
 #location examples are "bottomright", "topleft", etc.
 
 
-#Regressions ####
+#REGRESSIONS ####
 
 #Interpreting regression results - key statistics:
 #R-squared
@@ -283,26 +283,7 @@ legend("location", c("X", "Y"), col=c("red", "blue"))
 #Adjusted R-squared
   # Adjusts for the number of terms in the model!
   # Its value increases only when the new term improves the model fit more than expected by chance alone.
-  # The adjusted R-squared value actually decreases when the term doesn’t improve the model fit enough.
-  # Useful for comparing goodness-of-fit for regression models with differing numbers of independent variables.
-#Multiple R-squared
-#Significance codes
-#F-statistic
-  # a large f-stat means the model has a strong fit and we can reject the
-  # null hypothesis that a null model (just the intercept) describes the data better.
-#p-value
-#AIC
-  # Particularly helpful for backwards selection
-#variance inflation factor (VIF)
-  # Index of how a coefficient variance increases due to colinearity.
-  # VIF calculates how correlated the variable is with all the other variables in the model.
-  # Mechanics: Regress X1 on X2, calculate r2 of this relationship
-  # Calculate the VIF for X1 as follows:  1/(1 - r2)
-  # some people say if VIF>5-10 then you have a problem, 
-  # others are more conservative and say if sqrt(vif)>2 then you have a problem
-
-#Other useful statistics: 
-#Residual standard error - are they centered around 0?
+  # The adjusted R-squared value actually decreases when the term doesn't
 
 
 #R MARKDOWN ####
@@ -323,4 +304,3 @@ legend("location", c("X", "Y"), col=c("red", "blue"))
     font-family: font name;
   }
 </style>
-

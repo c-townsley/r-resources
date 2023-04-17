@@ -4,6 +4,17 @@
 #GENERAL ####
 #Michael Fitchman's "Intro to R and FAQ for Planners" - https://mafichman.github.io/R_FAQ_For_Planners/ 
 
+
+#UPDATE R ####
+R.version #to check R version
+install.packages("installr")
+library(installr)
+updateR()
+
+install.packages("rlang")
+library(rlang)
+
+
 #SETUP ####
 
 rm(list=ls())
@@ -283,7 +294,24 @@ legend("location", c("X", "Y"), col=c("red", "blue"))
 #Adjusted R-squared
   # Adjusts for the number of terms in the model!
   # Its value increases only when the new term improves the model fit more than expected by chance alone.
-  # The adjusted R-squared value actually decreases when the term doesn't
+  # The adjusted R-squared value actually decreases when the term doesn???t improve the model fit enough.
+  # Useful for comparing goodness-of-fit for regression models with differing numbers of independent variables.
+#F-statistic
+  # f-statistics can be calculated as MSR/MSE where MSR represents the mean sum 
+  # of squares residuals and MSE represents the mean sum of squares error.
+  # a large f-stat means the model has a strong fit and we can reject the
+  # null hypothesis that a null model (just the intercept) describes the data better.
+  # If the p-value associated with the F-stat is ??? 0.05 Then there is no relationship between ANY of the
+  # independent variables and Y.
+  # If the p-value associated with the F-statistic < 0.05 then AT LEAST 1 independent variable is related to Y.
+#Residual Std. Error
+  # measures the standard deviation of the residuals in a regression model.
+  # The smaller the residual standard error, the better a regression model fits a dataset.
+#AIC
+  # Particularly helpful for backwards selection
+  # it's a measure of the quality of a model and used to pick a model from many. 
+  # AIC is all relative - just tells you what's the best one you have. 
+  # the preferred model has the lowest AIC. And AIC increases with the number of explanatory variables.
 
 
 #R MARKDOWN ####

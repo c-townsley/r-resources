@@ -332,3 +332,6 @@ legend("location", c("X", "Y"), col=c("red", "blue"))
     font-family: font name;
   }
 </style>
+  
+#To set root directory
+knitr::opts_knit$set(root.dir = "~")

@@ -269,6 +269,17 @@ ggplot() +
 #Overview of ggplot themes - https://ggplot2.tidyverse.org/reference/ggtheme.html
 #Rayshader package for 3D visualization - https://www.rayshader.com/ 
 
+#Colorblind friendly color palettes
+
+#The Okabe Ito color blind friendly palette (can replace grey with black)
+#https://mikemol.github.io/technique/colorblind/2018/02/11/color-safe-palette.html 
+cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+          "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+#Color brewer is a great color resource in general and has a color blind friendly set of palettes.
+library(RColorBrewer)
+display.brewer.all(colorblindFriendly = TRUE)
+
 #create color palette
 palettename <- c("#050234","#2C0078","#7F00BF","#F600FF","#FF0DBE","#FF569F","#FF9BA8","#FFE8E4")
 
@@ -279,6 +290,28 @@ par(mfrow=c(2,1))
 legend("location", c("X", "Y"), col=c("red", "blue"))
 #location examples are "bottomright", "topleft", etc.
 
+#Map theme from Timo Grossenbacher
+#https://timogrossenbacher.ch/2016/12/beautiful-thematic-maps-with-ggplot2-only/#general-ggplot2-theme-for-map 
+theme_map <- function(...) {
+  theme_minimal() +
+    theme(
+      text = element_text(family = "Ubuntu Regular", color = "#22211d"),
+      axis.line = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      # panel.grid.minor = element_line(color = "#ebebe5", size = 0.2),
+      panel.grid.major = element_line(color = "#ebebe5", size = 0.2),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "#f5f5f2", color = NA), 
+      panel.background = element_rect(fill = "#f5f5f2", color = NA), 
+      legend.background = element_rect(fill = "#f5f5f2", color = NA),
+      panel.border = element_blank(),
+      ...
+    )
+}
 
 #REGRESSIONS ####
 
